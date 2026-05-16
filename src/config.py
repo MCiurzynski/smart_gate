@@ -13,6 +13,7 @@ class Config:
     CAMERA_IP = os.environ.get('CAMERA_IP')
     CAMERA_PORT = os.environ.get('CAMERA_PORT')
     RTSP_PATH = os.environ.get('RTSP_PATH')
+    BATCH_SIZE = int(os.environ.get('BATCH_SIZE'))
 
     REGION_CONF = 0.9
     CHARS_CONF = 0.9

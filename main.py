@@ -19,7 +19,6 @@ def get_source():
 def main():
     detector = Detector()
     source = get_source()
-    frame_rate = int(source.get_frame_rate())
     batch = []
     try:
         while True:
@@ -27,7 +26,7 @@ def main():
             if not ret:
                 break
             batch.append(frame)
-            if len(batch) == frame_rate: # Check license plates in one second
+            if len(batch) == Config.BATCH_SIZE:
                 license = detector.process_batch(batch)
                 batch.clear()
                 print(license)
