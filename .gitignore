@@ -15,3 +15,4 @@ wheels/
 **/*.mp4
 **/*.pt
 .coverage
+.vscode/
