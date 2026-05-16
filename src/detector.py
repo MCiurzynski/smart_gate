@@ -31,40 +31,39 @@ class Detector:
         return self.validator.validate_plates(plates)
     
 class LicensePlateValidator:
-
     def __init__(self):
-        self.one_char = r'^(A-Z)([A-Z0-9]{3})'
-        self.two_char_vehicle = [ # nwm po co to robiłem
-            r'\d{2}[1-9]',
-            r'\d[1-9][A-Z]',
-            r'[1-9][A-Z][1-9]',
-            r'[A-Z]\d[1-9]',
-            r'[1-9][A-Z]{2}',
-            r'[A-Z]{2}[1-9]',
-            r'[A-Z][1-9][A-Z]'
+        self._one_char = r'^([A-Z])([A-Z0-9]{3})$'
+        self._one_char_vehicle = [
+            r'^\d{3}$',
+            r'^\d{2}[A-Z]$',
+            r'^[1-9][A-Z][1-9]$',
+            r'^[A-Z]\d{2}$',
+            r'^[1-9][A-Z]{2}$',
+            r'^[A-Z]{2}[1-9]$',
+            r'^[A-Z][1-9][A-Z]$'
         ]
-        self.two_char = r'^([A-Z]{2})([A-Z0-9]{5})'
-        self.two_char_vehicle = [
-            r'\d{4}[1-9]',
-            r'\d{3}\[1-9][A-Z]',
-            r'\d{2}[1-9][A-Z]{2}',
-            r'[1-9][A-Z]\d{2}[1-9]',
-            r'[1-9][A-Z]{2}\d[1-9]}'
+        self._two_char = r'^([A-Z]{2})([A-Z0-9]{5})$'
+        self._two_char_vehicle = [
+            r'^\d{5}$',
+            r'^\d{4}[A-Z]$',
+            r'^\d{3}[A-Z]{2}$',
+            r'^[1-9][A-Z]\d{3}$',
+            r'^[1-9][A-Z]{2}\d{2}$'
         ]
-        self.three_char = r'^([A-Z]{3})([A-Z0-9]{4-5})'
-        self.three_char_vehicle = [
-            r'[A-Z]\d{2}[1-9]',
-            r'\d[1-9][A-Z]{2}',
-            r'[1-9][A-Z]\d[1-9]',
-            r'\d[1-9][A-Z][1-9]',
-            r'[1-9][A-Z]{2}[1-9]',
-            r'[A-Z]{2}\d[1-9]',
-            r'\d{4}[1-9]',
-            r'\d{3}[1-9][A-Z]',
-            r'\d{2}[1-9][A-Z]{2}',
-            r'[A-Z]\d[1-9][A-Z]',
-            r'[A-Z][1-9][A-Z]{2}',
-            r'\d{2}[1-9][A-Z]{2}'
+        self._three_char = r'^([A-Z]{3})([A-Z0-9]{4,5})$'
+        self._three_char_vehicle = [
+            r'^[A-Z]\d{3}$',
+            r'^\d{2}[A-Z]{2}$',
+            r'^[1-9][A-Z]\d{2}$',
+            r'^\d{2}[A-Z][1-9]$',
+            r'^[1-9][A-Z]{2}[1-9]$',
+            r'^[A-Z]{2}\d{2}$',
+            r'^\d{5}$',
+            r'^\d{4}[A-Z]$',
+            r'^\d{3}[A-Z]{2}$',
+            r'^[A-Z]\d{2}[A-Z]$',
+            r'^[A-Z][1-9][A-Z]{2}$',
+            r'^\d{3}[A-Z]{2}$'
         ]
 
     def validate_plates(self, plates):
@@ -84,10 +83,10 @@ class LicensePlateValidator:
         return False
     
     def _validate_1_char(self, plate):
-        m = re.match(self.one_char, plate)
+        m = re.match(self._one_char, plate)
         if m:
             vehicle = m.group(2)
-            for reg in self.one_char_vehicle:
+            for reg in self._one_char_vehicle:
                 if re.match(reg, vehicle):
                     return True
             return False
@@ -95,10 +94,10 @@ class LicensePlateValidator:
             return False
     
     def _validate_2_char(self, plate):
-        m = re.match(self.two_char, plate)
+        m = re.match(self._two_char, plate)
         if m:
             vehicle = m.group(2)
-            for reg in self.two_char_vehicle:
+            for reg in self._two_char_vehicle:
                 if re.match(reg, vehicle):
                     return True
             return False
@@ -106,10 +105,10 @@ class LicensePlateValidator:
             return False
         
     def _validate_3_char(self, plate):
-        m = re.match(self.three_char, plate)
+        m = re.match(self._three_char, plate)
         if m:
             vehicle = m.group(2)
-            for reg in self.three_char_vehicle:
+            for reg in self._three_char_vehicle:
                 if re.match(reg, vehicle):
                     return True
             return False
