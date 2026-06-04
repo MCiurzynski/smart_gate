@@ -11,6 +11,26 @@ services:
     restart: on-failure:5
     volumes:
       - postgres_data:/var/lib/postgresql
+  
+  detector:
+    build:
+      context: detector
+      dockerfile: Dockerfile
+    env_file: "detector/.env"
+    volumes:
+      - type: bind
+        source: detector/data
+        target: /app/data
+        read_only: true
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+    # depends_on:
+    #   - db
 
 volumes:
   postgres_data:
