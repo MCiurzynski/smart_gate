@@ -11,6 +11,22 @@ services:
     restart: on-failure:5
     volumes:
       - postgres_data:/var/lib/postgresql
-
+  backend:
+    build:
+      context: backend/
+      dockerfile: .Dockerfile
+    container_name: backend_sg
+    depends_on:
+      - db
+    environment:
+      FRONTEND_HOST: "http://localhost:5175"
+      POSTGRES_SERVER: "db"
+      POSTGRES_PORT: "5432"
+      POSTGRES_USER: "root"
+      POSTGRES_PASSWORD: "p4ssw0rd"
+      POSTGRES_DB: "sg_db"
+    ports:
+      - "8000:8000"
+    restart: on-failure:5
 volumes:
   postgres_data:

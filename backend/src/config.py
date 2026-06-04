@@ -47,6 +47,9 @@ class Settings(BaseSettings):
     POSTGRES_PASSWORD: str = ""
     POSTGRES_DB: str = ""
 
+    SUPERUSER_NAME: str = "root"
+    SUPERUSER_PASSWORD: str = "toor"
+
     @computed_field
     @property
     def SQLALCHEMY_DATABASE_URI(self) -> PostgresDsn:

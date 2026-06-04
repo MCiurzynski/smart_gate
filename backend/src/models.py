@@ -1,5 +1,7 @@
 from sqlmodel import Field, SQLModel
 
+from src.auth.models import User
+
 
 class PlateBase(SQLModel):
     label: str | None = None

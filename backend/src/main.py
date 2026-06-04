@@ -1,3 +1,5 @@
+from contextlib import asynccontextmanager
+
 from fastapi import FastAPI
 from starlette.middleware.cors import CORSMiddleware
 
@@ -8,6 +10,16 @@ app = FastAPI(
     title=settings.PROJECT_NAME,
     openapi_url=f"{settings.API_STR}/openapi.json",
 )
+
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    # SQLModel.metadata.create_all(engine)
+
+    # Inicjalizacja Twojego superużytkownika
+
+    yield
+
 
 if settings.all_cors_origins:
     app.add_middleware(
