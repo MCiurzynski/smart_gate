@@ -18,7 +18,7 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [tool.hatch.build.targets.wheel]
-packages = ["app"]
+packages = ["src"]
 
 [tool.mypy]
 strict = true
@@ -54,7 +54,7 @@ ignore = [
 keep-runtime-typing = true
 
 [tool.coverage.run]
-source = ["app"]
+source = ["src"]
 dynamic_context = "test_function"
 
 [tool.coverage.report]
