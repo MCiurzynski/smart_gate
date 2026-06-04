@@ -7,6 +7,8 @@ from src.sources import (
     SingleImageSource
 )
 from src.config import Config
+from src.auth import Authenticator
+from src.gate import Gate
 
 def get_source():
     if Config.APP_MODE == 'VIDEO': return VideoFileSource(Config.SOURCE_PATH)
@@ -19,6 +21,8 @@ def get_source():
 def main():
     detector = Detector()
     source = get_source()
+    auth = Authenticator()
+    gate = Gate()
     batch = []
     try:
         while True:
@@ -27,9 +31,12 @@ def main():
                 break
             batch.append(frame)
             if len(batch) == Config.BATCH_SIZE:
-                license = detector.process_batch(batch)
+                licenses = detector.process_batch(batch)
                 batch.clear()
-                print(license)
+                for license in licenses:
+                    if auth.authenticate(license):
+                        gate.open()
+                        break
     except KeyboardInterrupt:
         print('Stopped by user')
     finally:

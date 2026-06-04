@@ -18,6 +18,8 @@ class Config:
     REGION_CONF = 0.9
     CHARS_CONF = 0.9
 
+    BACKEND_ADDRESS=os.environ.get('BACKEND_ADDRESS')
+
     @staticmethod
     def get_rtsp_url() -> str:
         return f"rtsp://{Config.CAMERA_USER}:{Config.CAMERA_PASSWORD}@{Config.CAMERA_IP}:{Config.CAMERA_PORT}/{Config.RTSP_PATH}"
