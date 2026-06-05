@@ -74,6 +74,21 @@ plate number, label, status (allowed/denied) and date range. `GET /api/events/`
 accepts `code`, `label`, `allowed`, `date_from`, `date_to`, `offset`, `limit`; the
 returned `total` reflects the active filters (independent of the page).
 
+### Seed demo data
+
+To fill the whitelist and the **Wykrycia** history with realistic data (handy for
+trying the infinite scroll and filters), run the seed script against the running
+backend:
+
+```bash
+docker compose exec backend python scripts/seed_events.py --events 200
+# options: --events N  --whitelist N  --allowed-ratio 0..1  --api <url>
+```
+
+It posts plates and detections over HTTP, so events go through the real
+whitelist-resolution logic. (It is a dev/demo seed, **not** part of the test suite.
+Seeded events are timestamped "now".)
+
 The detector is **not** part of `docker compose` (it typically needs a GPU / camera).
 Run it separately and point it at the backend via `BACKEND_URL` (default
 `http://localhost:8000/api`, see `detector/.env.example`). With the backend

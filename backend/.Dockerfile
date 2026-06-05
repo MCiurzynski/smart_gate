@@ -29,6 +29,8 @@ RUN --mount=type=cache,target=/root/.cache/uv \
 
 COPY ./scripts/start.sh /app/backend/
 
+COPY ./scripts/seed_events.py /app/backend/scripts/
+
 COPY ./pyproject.toml ./alembic.ini ./.env /app/backend/
 
 COPY ./alembic /app/backend/alembic
