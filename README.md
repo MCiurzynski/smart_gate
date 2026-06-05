@@ -69,6 +69,11 @@ detector  ──POST /api/events {code}──▶  backend resolves against the w
 frontend  ──GET /api/events──────────▶  "Wykrycia" tab shows the live history
 ```
 
+The **Wykrycia** tab has infinite scroll (loads more as you scroll) and filters by
+plate number, label, status (allowed/denied) and date range. `GET /api/events/`
+accepts `code`, `label`, `allowed`, `date_from`, `date_to`, `offset`, `limit`; the
+returned `total` reflects the active filters (independent of the page).
+
 The detector is **not** part of `docker compose` (it typically needs a GPU / camera).
 Run it separately and point it at the backend via `BACKEND_URL` (default
 `http://localhost:8000/api`, see `detector/.env.example`). With the backend

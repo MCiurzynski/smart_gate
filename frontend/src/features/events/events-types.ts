@@ -14,3 +14,20 @@ export interface EventList {
   offset: number;
   limit: number;
 }
+
+/** UI filter state (form values), distinct from the server query shape. */
+export interface EventFilters {
+  code: string;
+  label: string;
+  status: 'all' | 'allowed' | 'denied';
+  dateFrom: string;
+  dateTo: string;
+}
+
+export const EMPTY_FILTERS: EventFilters = {
+  code: '',
+  label: '',
+  status: 'all',
+  dateFrom: '',
+  dateTo: '',
+};
