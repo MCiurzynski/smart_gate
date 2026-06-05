@@ -61,6 +61,11 @@
   align-items: start;
 }
 
+.page {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
 .page-narrow {
   max-width: 520px;
   margin: 0 auto;
@@ -109,6 +114,34 @@
   background: var(--accent-bg);
   color: var(--accent);
   border: 1px solid var(--accent-border);
+}
+
+.badge-allowed {
+  background: rgba(48, 164, 108, 0.12);
+  color: #2f9e6b;
+  border-color: rgba(48, 164, 108, 0.4);
+}
+
+.badge-denied {
+  background: rgba(229, 72, 77, 0.1);
+  color: #e5484d;
+  border-color: rgba(229, 72, 77, 0.4);
+}
+
+.live-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: #2f9e6b;
+  margin-left: auto;
+  box-shadow: 0 0 0 0 rgba(48, 164, 108, 0.6);
+  animation: live-pulse 1.8s ease-out infinite;
+}
+
+@keyframes live-pulse {
+  to {
+    box-shadow: 0 0 0 8px rgba(48, 164, 108, 0);
+  }
 }
 
 /* Table */

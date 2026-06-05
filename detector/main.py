@@ -1,3 +1,6 @@
+import logging
+
+from src.client import report_detections
 from src.detector import Detector
 from src.sources import (
     RTSPSource,
@@ -7,6 +10,8 @@ from src.sources import (
     SingleImageSource
 )
 from src.config import Config
+
+logging.basicConfig(level=logging.INFO, format='%(asctime)s %(levelname)s %(message)s')
 
 def get_source():
     if Config.APP_MODE == 'VIDEO': return VideoFileSource(Config.SOURCE_PATH)
@@ -29,7 +34,7 @@ def main():
             if len(batch) == Config.BATCH_SIZE:
                 license = detector.process_batch(batch)
                 batch.clear()
-                print(license)
+                report_detections(license)
     except KeyboardInterrupt:
         print('Stopped by user')
     finally:

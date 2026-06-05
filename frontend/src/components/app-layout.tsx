@@ -16,6 +16,9 @@ export const AppLayout = () => (
         <NavLink to="/check" className={navClass}>
           Sprawdź tablicę
         </NavLink>
+        <NavLink to="/events" className={navClass}>
+          Wykrycia
+        </NavLink>
       </nav>
     </header>
 

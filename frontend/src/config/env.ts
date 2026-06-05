@@ -4,5 +4,6 @@
  */
 export const env = {
   // Defaults to the Vite dev proxy path (see vite.config.ts).
-  apiBaseUrl: import.meta.env.VITE_API_BASE_URL ?? '/api',
+  // `import.meta.env.VITE_*` is typed `any` by vite/client, so pin it to string.
+  apiBaseUrl: (import.meta.env.VITE_API_BASE_URL ?? '/api') as string,
 } as const;

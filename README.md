@@ -51,11 +51,28 @@ and the [2026-Boilerplate](https://github.com/bishopZ/2026-Boilerplate) conventi
 frontend/src/
 ├── config/            # typed env access
 ├── lib/               # api-client (typed fetch) + react-query client
-├── features/plates/   # plates domain: api, hooks, types, components
+├── features/plates/   # whitelist domain: api, hooks, types, components
+├── features/events/   # detections/history domain (live-polling feed)
 ├── components/        # shared app shell (layout, error boundary)
 ├── pages/             # route-level, lazy-loaded screens
 └── app-router.tsx     # React Router routes
 ```
+
+## 🚗 Detections flow
+
+The detector ([detector/](detector/)) recognises plates from a video/camera source
+and reports each one to the backend:
+
+```
+detector  ──POST /api/events {code}──▶  backend resolves against the whitelist
+          ◀──────────────────────────  stores AccessEvent (allowed / denied)
+frontend  ──GET /api/events──────────▶  "Wykrycia" tab shows the live history
+```
+
+The detector is **not** part of `docker compose` (it typically needs a GPU / camera).
+Run it separately and point it at the backend via `BACKEND_URL` (default
+`http://localhost:8000/api`, see `detector/.env.example`). With the backend
+unreachable the detector logs a warning and keeps running.
 
 <!-- ## 🚀 Quick Start -->
 <!---->

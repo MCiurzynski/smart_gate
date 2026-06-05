@@ -6,6 +6,7 @@ import { AppLayout } from '@/components/app-layout';
 // Code-split each page so the initial bundle stays small.
 const PlatesPage = lazy(() => import('@/pages/plates-page'));
 const CheckPage = lazy(() => import('@/pages/check-page'));
+const EventsPage = lazy(() => import('@/pages/events-page'));
 const NotFoundPage = lazy(() => import('@/pages/not-found-page'));
 
 export const router = createBrowserRouter([
@@ -16,6 +17,7 @@ export const router = createBrowserRouter([
       { index: true, element: <Navigate to="/plates" replace /> },
       { path: 'plates', element: <PlatesPage /> },
       { path: 'check', element: <CheckPage /> },
+      { path: 'events', element: <EventsPage /> },
       { path: '*', element: <NotFoundPage /> },
     ],
   },
