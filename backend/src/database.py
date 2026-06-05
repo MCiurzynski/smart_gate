@@ -2,7 +2,7 @@ from collections.abc import Generator
 from typing import Annotated
 
 from fastapi import Depends
-from sqlmodel import Session, create_engine
+from sqlmodel import Session, create_engine, select
 
 from src.auth.dependencies import create_user
 from src.auth.models import User, UserCreate
