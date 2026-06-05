@@ -16,16 +16,17 @@ def get_db() -> Generator[Session, None, None]:
         yield session
 
 
-def init_db(session: Session) -> None:
-    user = session.exec(
-        select(User).where(User.name == settings.SUPERUSER_NAME)
-    ).first()
-    if not user:
-        user_in = UserCreate(
-            email=settings.SUPERUSER_NAME,
-            password=settings.SUPERUSER_PASSWORD,
-        )
-        user = create_user(session=session, user_create=user_in)
+def init_db() -> None:
+    with Session(engine) as session:
+        user = session.exec(
+            select(User).where(User.name == settings.SUPERUSER_NAME)
+        ).first()
+        if not user:
+            user_in = UserCreate(
+                name=settings.SUPERUSER_NAME,
+                password=settings.SUPERUSER_PASSWORD,
+            )
+            user = create_user(session=session, user_create=user_in)
 
 
 SessionDep = Annotated[Session, Depends(get_db)]

@@ -10,7 +10,7 @@ class UserBase(SQLModel):
     name: str = Field(unique=True, min_length=4, max_length=24)
 
 
-class UserCreate(SQLModel):
+class UserCreate(UserBase):
     password: str = Field(min_length=8, max_length=30)
 
 

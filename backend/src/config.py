@@ -41,6 +41,10 @@ class Settings(BaseSettings):
         ]
 
     PROJECT_NAME: str = "smart-gate-backend"
+    PROJECT_DESC: str = (
+        "Backend api used for license plate whitelist configuration"
+        "and smart-gate authorization"
+    )
     POSTGRES_SERVER: str = ""
     POSTGRES_PORT: int = 5432
     POSTGRES_USER: str = ""
@@ -48,7 +52,7 @@ class Settings(BaseSettings):
     POSTGRES_DB: str = ""
 
     SUPERUSER_NAME: str = "root"
-    SUPERUSER_PASSWORD: str = "toor"
+    SUPERUSER_PASSWORD: str = "qwerty123"
 
     @computed_field
     @property
