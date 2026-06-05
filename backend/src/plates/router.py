@@ -1,10 +1,17 @@
+from collections.abc import Mapping
 from typing import Any
 
-from fastapi import APIRouter, HTTPException, Query, status
+from fastapi import APIRouter, Depends, HTTPException, Query, status
 from sqlmodel import func, select
 
 from src.database import SessionDep
-from src.plates.models import Plate, PlateCreate, PlatePublic, PlateUpdate
+from src.plates.dependencies import (
+    create_plate_by_code,
+    get_plate_by_code,
+    update_plate_by_code,
+)
+from src.plates.models import Plate
+from src.plates.schemas import PlatePublic
 
 plates_router = APIRouter(prefix="/plates", tags=["plates"])
 
@@ -28,7 +35,7 @@ plates_router = APIRouter(prefix="/plates", tags=["plates"])
         },
     },
 )
-def read_plate(
+def list_plate(
     session: SessionDep, offset: int = 0, limit: int = Query(default=100, le=100)
 ) -> Any:
     """
@@ -50,14 +57,7 @@ def read_plate(
     description="Creates a new license plate entry",
     summary="Create Plate",
 )
-async def create_plate(session: SessionDep, plate_in: PlateCreate) -> Any:
-    """
-    Create a new license plate
-    """
-    plate = Plate.model_validate(plate_in)
-    session.add(plate)
-    session.commit()
-    session.refresh(plate)
+async def create_plate(plate: Mapping = Depends(create_plate_by_code)) -> Any:
     return plate
 
 
@@ -68,22 +68,8 @@ async def create_plate(session: SessionDep, plate_in: PlateCreate) -> Any:
     description="Updates an existing license plate by code",
     summary="Update Plate",
 )
-async def update_plate(
-    session: SessionDep, plate_code: str, plate_in: PlateUpdate
-) -> Any:
-    """
-    Update license plate
-    """
-    db_plate = session.get(Plate, plate_code)
-    if not db_plate:
-        raise HTTPException(status_code=404, detail="Plate not found")
-
-    update_data = plate_in.model_dump(exclude_unset=True)
-    db_plate.sqlmodel_update(update_data)
-    session.add(db_plate)
-    session.commit()
-    session.refresh(db_plate)
-    return db_plate
+async def update_plate(plate: Mapping = Depends(update_plate_by_code)) -> Any:
+    return plate
 
 
 @plates_router.delete(
@@ -92,14 +78,33 @@ async def update_plate(
     description="Deletes a license plate entry",
     summary="Delete Plate",
 )
-async def delete_plate(session: SessionDep, plate_code: str) -> Any:
+async def delete_plate(
+    session: SessionDep, plate: Mapping = Depends(get_plate_by_code)
+) -> Any:
     """
     Delete license plate
     """
-    db_plate = session.get(Plate, plate_code)
-    if not db_plate:
+    if not plate:
         raise HTTPException(status_code=404, detail="Plate not found")
 
-    session.delete(db_plate)
+    session.delete(plate)
     session.commit()
     return {"message": "Plate deleted successfully"}
+
+
+@plates_router.get(
+    "/{plate_code}",
+    status_code=status.HTTP_200_OK,
+    description="Checks whether license plate is on the whitelist",
+    summary="Check license plate",
+)
+async def check_plate(plate: Mapping = Depends(get_plate_by_code)):
+    """
+    Checks whether license plate is on the whitelist
+    """
+    if not plate:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN, detail="Unauthorized license plate"
+        )
+
+    return {"message": "Plate on whitelist", "data": plate}

@@ -2,26 +2,8 @@ import uuid
 
 from sqlmodel import Field, SQLModel
 
-
-class PlateBase(SQLModel):
-    label: str | None = None
-    code: str = Field(index=True, unique=True)
+from src.plates.schemas import PlateBase
 
 
-class PlateCreate(PlateBase):
-    pass
-
-
-class PlateUpdate(PlateBase):
-    pass
-
-
-class Plate(PlateBase, table=True):
+class Plate(PlateBase, SQLModel, table=True):
     id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True)
-
-
-class PlatePublic(SQLModel):
-    data: list[Plate]
-    total: int
-    offset: int
-    limit: int
