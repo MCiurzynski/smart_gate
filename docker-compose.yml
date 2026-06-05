@@ -28,5 +28,15 @@ services:
     ports:
       - "8000:8000"
     restart: on-failure:5
+  frontend:
+    build:
+      context: frontend/
+      dockerfile: .Dockerfile
+    container_name: frontend_sg
+    depends_on:
+      - backend
+    ports:
+      - "5175:80"
+    restart: on-failure:5
 volumes:
   postgres_data:
