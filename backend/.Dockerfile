@@ -48,4 +48,4 @@ ENV PYTHONPATH=/app
 
 WORKDIR /app/backend/
 RUN chmod +x ./start.sh 
-CMD ["./start.sh"]
+CMD ["/app/backend/start.sh"]

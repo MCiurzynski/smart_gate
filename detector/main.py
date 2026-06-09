@@ -39,6 +39,7 @@ def main():
                 licenses = detector.process_batch(batch)
                 batch.clear()
                 for license in licenses:
+                    report_detections(license)
                     if auth.authenticate(license):
                         gate.open()
                         break

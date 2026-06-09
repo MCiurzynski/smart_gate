@@ -21,7 +21,7 @@ class Config:
     REGION_CONF = 0.9
     CHARS_CONF = 0.9
 
-    BACKEND_ADDRESS=os.environ.get('BACKEND_ADDRESS')
+    GATE_URL=os.environ.get('GATE_URL')
 
     @staticmethod
     def get_rtsp_url() -> str:

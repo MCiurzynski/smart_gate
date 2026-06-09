@@ -17,20 +17,16 @@ services:
       context: detector
       dockerfile: Dockerfile
     env_file: "detector/.env"
+    depends_on:
+      - db
+      - backend
     volumes:
       - type: bind
         source: detector/data
         target: /app/data
         read_only: true
-    deploy:
-      resources:
-        reservations:
-          devices:
-            - driver: nvidia
-              count: all
-              capabilities: [gpu]
-    # depends_on:
-    #   - db
+      - detector_cache:/root/.cache
+      - ultralytics_config:/Ultralytics
 
   backend:
     build:
@@ -61,3 +57,5 @@ services:
     restart: on-failure:5
 volumes:
   postgres_data:
+  detector_cache:
+  ultralytics_config:
