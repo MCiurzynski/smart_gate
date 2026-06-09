@@ -10,6 +10,8 @@ from src.sources import (
     SingleImageSource
 )
 from src.config import Config
+from src.auth import Authenticator
+from src.gate import Gate
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s %(levelname)s %(message)s')
 
@@ -24,6 +26,8 @@ def get_source():
 def main():
     detector = Detector()
     source = get_source()
+    auth = Authenticator()
+    gate = Gate()
     batch = []
     try:
         while True:
@@ -32,9 +36,12 @@ def main():
                 break
             batch.append(frame)
             if len(batch) == Config.BATCH_SIZE:
-                license = detector.process_batch(batch)
+                licenses = detector.process_batch(batch)
                 batch.clear()
-                report_detections(license)
+                for license in licenses:
+                    if auth.authenticate(license):
+                        gate.open()
+                        break
     except KeyboardInterrupt:
         print('Stopped by user')
     finally:
