@@ -3,9 +3,9 @@ services:
     image: postgres:18.4-bookworm
     container_name: postgres_sg
     environment:
-      POSTGRES_USER: root
-      POSTGRES_PASSWORD: p4ssw0rd
-      POSTGRES_DB: sg_db
+      POSTGRES_USER: "root"
+      POSTGRES_PASSWORD: "p4ssw0rd"
+      POSTGRES_DB: "sg_db"
     ports:
       - "5432:5432"
     restart: on-failure:5
@@ -32,5 +32,32 @@ services:
     # depends_on:
     #   - db
 
+  backend:
+    build:
+      context: backend/
+      dockerfile: .Dockerfile
+    container_name: backend_sg
+    depends_on:
+      - db
+    environment:
+      FRONTEND_HOST: "http://localhost:5175"
+      POSTGRES_SERVER: "db"
+      POSTGRES_PORT: "5432"
+      POSTGRES_USER: "root"
+      POSTGRES_PASSWORD: "p4ssw0rd"
+      POSTGRES_DB: "sg_db"
+    ports:
+      - "8000:8000"
+    restart: on-failure:5
+  frontend:
+    build:
+      context: frontend/
+      dockerfile: .Dockerfile
+    container_name: frontend_sg
+    depends_on:
+      - backend
+    ports:
+      - "5175:80"
+    restart: on-failure:5
 volumes:
   postgres_data:

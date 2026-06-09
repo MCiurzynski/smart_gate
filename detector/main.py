@@ -1,3 +1,6 @@
+import logging
+
+from src.client import report_detections
 from src.detector import Detector
 from src.sources import (
     RTSPSource,
@@ -9,6 +12,8 @@ from src.sources import (
 from src.config import Config
 from src.auth import Authenticator
 from src.gate import Gate
+
+logging.basicConfig(level=logging.INFO, format='%(asctime)s %(levelname)s %(message)s')
 
 def get_source():
     if Config.APP_MODE == 'VIDEO': return VideoFileSource(Config.SOURCE_PATH)

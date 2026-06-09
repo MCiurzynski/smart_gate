@@ -15,6 +15,9 @@ class Config:
     RTSP_PATH = os.environ.get('RTSP_PATH')
     BATCH_SIZE = int(os.environ.get('BATCH_SIZE'))
 
+    # Backend API base URL the detector reports detections to.
+    BACKEND_URL = os.environ.get('BACKEND_URL', 'http://localhost:8000/api')
+
     REGION_CONF = 0.9
     CHARS_CONF = 0.9
 

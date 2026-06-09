@@ -89,7 +89,13 @@ const CODE_GUIDELINES = {
 
 export default defineConfig(
   {
-    ignores: ["dist", "node_modules", "src/generated/api/openapi.generated.ts"],
+    ignores: [
+      "dist",
+      "node_modules",
+      "src/generated/api/openapi.generated.ts",
+      // Build tooling configs have fixed, non-kebab filenames.
+      "*.config.ts",
+    ],
   },
   {
     extends: [
